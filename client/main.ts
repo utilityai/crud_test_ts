@@ -28,7 +28,7 @@ class TodoClient {
   }
 
   // Create a to-do record
-  async create(todoRecord: Omit<TodoRecord, "id">): Promise<number> {
+  async create(todoRecord: TodoRecord): Promise<number> {
     const response = await fetch(this.serverUrl, {
       method: "POST",
       headers: {
