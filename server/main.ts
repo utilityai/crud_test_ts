@@ -139,5 +139,5 @@ async function handleRequest(request: Request): Promise<Response> {
 }
 
 if (import.meta.main) {
-  serve(handleRequest, { port: 800 });
+  serve(handleRequest, { port: 8000 });
 }
