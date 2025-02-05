@@ -2,7 +2,6 @@ import { serve } from "https://deno.land/std@0.194.0/http/server.ts";
 
 // To-do record interface
 interface TodoRecord {
-  id: number;
   content: string;
   is_complete: boolean;
 }
@@ -11,14 +10,11 @@ interface TodoRecord {
 const database: Record<number, TodoRecord> = {};
 let idCounter: number = 0;
 
-async function handleCreate(request: Request) {
+async function handleCreate(request: Request): Promise<Response> {
   try {
-    const requestBody = await request.json();
+    const { content, is_complete } = await request.json();
 
-    if (
-      typeof requestBody.content !== "string" ||
-      typeof requestBody.is_complete !== "boolean"
-    ) {
+    if (typeof content !== "string" || typeof is_complete !== "boolean") {
       return new Response(
         JSON.stringify({
           error:
@@ -32,14 +28,9 @@ async function handleCreate(request: Request) {
     }
 
     const id = ++idCounter;
-    const record: TodoRecord = {
-      id: id,
-      content: requestBody.content,
-      is_complete: requestBody.is_complete,
-    };
-    database[record.id] = record;
-    console.log(`Successfully created to-do ${record.id}`);
-    return new Response(JSON.stringify({ id: record.id }), {
+    database[id] = { content, is_complete };
+    console.log(`Successfully created to-do ${id}`);
+    return new Response(JSON.stringify({ id }), {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
@@ -54,7 +45,7 @@ async function handleCreate(request: Request) {
   }
 }
 
-function handleGetById(pathname: string) {
+function handleGetById(pathname: string): Response {
   const idStr = pathname.slice(1); // Extract ID from path
   const id = parseInt(idStr, 10);
 
@@ -84,7 +75,7 @@ function handleGetById(pathname: string) {
   });
 }
 
-function handleDeleteById(pathname: string) {
+function handleDeleteById(pathname: string): Response {
   const idStr = pathname.slice(1);
   const id = parseInt(idStr, 10);
 
@@ -148,7 +139,5 @@ async function handleRequest(request: Request): Promise<Response> {
 }
 
 if (import.meta.main) {
-  const port = 8000;
-  console.log(`Server running on port ${port}`);
-  serve(handleRequest, { port });
+  serve(handleRequest, { port: 800 });
 }
