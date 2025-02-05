@@ -1,10 +1,10 @@
 import { serve } from "https://deno.land/std@0.194.0/http/server.ts";
 
-// To-do record interface
-interface TodoRecord {
+// A to-do Record
+type TodoRecord = {
   content: string;
   is_complete: boolean;
-}
+};
 
 // In-memory database
 const database: Record<number, TodoRecord> = {};
