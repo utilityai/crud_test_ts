@@ -128,7 +128,7 @@ async function handleRequest(request: Request): Promise<Response> {
   }
 
   // Delete an existing to-do by ID
-  if (request.method === "DELETE" && pathname.startsWith("/")) {
+  if (request.method === "DELETE" && pathname.match(/\/\d+/)) {
     console.log("matched delete route", { pathname, method: request.method });
     return handleDeleteById(pathname);
   }
