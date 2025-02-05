@@ -1,5 +1,3 @@
-
-
 // To-do record interface
 interface TodoRecord {
   content: string;
@@ -30,7 +28,7 @@ class TodoClient {
   }
 
   // Create a to-do record
-  async create(todoRecord: Omit<TodoRecord, 'id'>): Promise<number> {
+  async create(todoRecord: Omit<TodoRecord, "id">): Promise<number> {
     const response = await fetch(this.serverUrl, {
       method: "POST",
       headers: {
@@ -47,7 +45,6 @@ class TodoClient {
       throw new Error(`Unexpected status code: ${response.status}`);
     }
   }
-
 
   // Delete a to-do record
   async delete(id: number): Promise<boolean> {
@@ -70,12 +67,15 @@ async function main() {
     console.error(`${nonExistingId} should never exist!`);
   } else {
     console.log(
-        `As expected, received null from server for ${nonExistingId}`,
+      `As expected, received null from server for ${nonExistingId}`,
     );
   }
 
   // create a new to-do
-  const todoRecord: Omit<TodoRecord, 'id'> = { content: "complete a coding test", is_complete: false };
+  const todoRecord: Omit<TodoRecord, "id"> = {
+    content: "complete a coding test",
+    is_complete: false,
+  };
   const newId = await client.create(todoRecord);
   console.log(`Created to-do ${newId}`);
 
@@ -85,7 +85,10 @@ async function main() {
   // check the fetched to-do matches the to-do we created
   if (fetched === null) {
     console.error(`${newId} is null despite us just creating it`);
-  } else if (fetched.content !== todoRecord.content || fetched.is_complete !== todoRecord.is_complete) {
+  } else if (
+    fetched.content !== todoRecord.content ||
+    fetched.is_complete !== todoRecord.is_complete
+  ) {
     console.error(`To-do ${newId} does not match what we inserted`);
   } else {
     console.log(`Created and fetched to-do ${newId} as expected`);
@@ -106,7 +109,7 @@ async function main() {
     console.error(`Delete failed for id ${newId} - to-do still exists!`);
   } else {
     console.log(
-        `As expected, was unable to get to-do ${newId} after deletion`,
+      `As expected, was unable to get to-do ${newId} after deletion`,
     );
   }
 }
